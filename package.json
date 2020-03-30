@@ -7,14 +7,27 @@
     "gqlgen": "./bin/run"
   },
   "bugs": "https://github.com/forsigner/gqlgen/issues",
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 100
+  },
   "dependencies": {
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.14.0",
     "@oclif/plugin-help": "^2.2.3",
+    "case": "^1.6.3",
+    "fs-jetpack": "^2.2.3",
+    "graphql": "^14.6.0",
+    "lodash.get": "^4.4.2",
+    "ts-morph": "^7.0.1",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
+    "@types/lodash.get": "^4.4.6",
     "@types/node": "^10.17.17",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
