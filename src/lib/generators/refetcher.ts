@@ -76,10 +76,10 @@ export function generateRefetcher(gqlConstantModule: string, refetchConfig: stri
       if (!args.length) {
         argsType = 'any'
         statements = `
-          if (fetcher.get(${gqlName}))  {
+          if (!fetcher.get(${gqlName}))  {
             return console.warn('fetcher找不到${gqlName}') as any
           }
-          if (args) opt.variables = args
+          if (Object.keys(args).length) opt.variables = args
           if (!opt.showLoading) opt.showLoading = false
           return await fetcher.get(${gqlName}).refetch(opt)
         `
@@ -87,10 +87,10 @@ export function generateRefetcher(gqlConstantModule: string, refetchConfig: stri
       } else if (args.length === 1 && firstArgName === 'input') {
         argsType = get(args[0], 'type.type.name.value')
         statements = `
-          if (fetcher.get(${gqlName}))  {
+          if (!fetcher.get(${gqlName}))  {
             return console.warn('fetcher找不到${gqlName}') as any
           }
-          if (args) opt.variables = {input: args}
+          if (Object.keys(args).length) opt.variables = {input: args}
           if (!opt.showLoading) opt.showLoading = false
           return await fetcher.get(${gqlName}).refetch(opt)
         `
@@ -98,10 +98,10 @@ export function generateRefetcher(gqlConstantModule: string, refetchConfig: stri
       } else {
         argsType = `${capital(operation)}${pascal(gqlName)}Args`
         statements = `
-          if (fetcher.get(${gqlName}))  {
+          if (!fetcher.get(${gqlName}))  {
             return console.warn('fetcher找不到${gqlName}') as any
           }
-          if (args) opt.variables = args
+          if (Object.keys(args).length) opt.variables = args
           if (!opt.showLoading) opt.showLoading = false
           return await fetcher.get(${gqlName}).refetch(opt)
         `
