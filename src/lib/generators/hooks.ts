@@ -69,15 +69,17 @@ export function generateHooks(gqlConstantModule: string, hooksConfig: string[]) 
       // 无参数
       if (!args.length) {
         argsType = 'any'
-        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: args })`
+        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: args||{} })`
         // 只有个参数并且叫 input
       } else if (args.length === 1 && firstArgName === 'input') {
         argsType = get(args[0], 'type.type.name.value')
-        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: { input: args } })`
+
+        // TODO: 处理函数
+        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: { input: args||{} } })`
         // 多参数,或者不叫 input
       } else {
         argsType = `${capital(operation)}${pascal(gqlName)}Args`
-        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: args })`
+        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: args||{} })`
       }
 
       gqlNames.push(gqlName)
@@ -87,8 +89,9 @@ export function generateHooks(gqlConstantModule: string, hooksConfig: string[]) 
         name: `use${pascal(gqlName)}`,
         parameters: [
           {
-            name: 'args',
-            type: `${argsType} = {} as ${argsType}`,
+            name: 'args?',
+            // TODO: 处理函数
+            type: `${argsType} | (() => ${argsType})`,
           },
           {
             name: 'opt',
