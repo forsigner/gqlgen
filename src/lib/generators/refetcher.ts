@@ -131,7 +131,7 @@ export function generateRefetcher(gqlConstantModule: string, refetchConfig: stri
 
   // import stook-graphql
   sourceFile.addImportDeclaration({
-    moduleSpecifier: '@common/stook-graphql',
+    moduleSpecifier: '@common/taro-stook-graphql',
     namedImports: ['RefetchOptions', 'fetcher'],
   })
 

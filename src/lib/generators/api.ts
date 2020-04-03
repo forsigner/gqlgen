@@ -102,7 +102,7 @@ export function generateApi(gqlConstantModule: string, apiConfig: string[]) {
 
   // import stook-graphql
   sourceFile.addImportDeclaration({
-    moduleSpecifier: '@common/stook-graphql',
+    moduleSpecifier: '@common/taro-stook-graphql',
     namedImports: ['Options', 'query'],
   })
 
