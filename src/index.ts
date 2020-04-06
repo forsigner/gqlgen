@@ -10,6 +10,8 @@ import {
 } from './lib'
 
 interface UserConfig {
+  httpModule: string
+  isGenerateGql: boolean
   gqlConstantModule: string
   query: string[]
   useQuery: string[]
@@ -36,15 +38,24 @@ class Gqlgen extends Command {
     const configPath = isAbsolute(config) ? config : join(process.cwd(), config)
     try {
       const useConfig: UserConfig = require(configPath)
-      const { gqlConstantModule, query, useQuery, useMutate, refetch, customGql } = useConfig
+      const {
+        gqlConstantModule,
+        httpModule = 'stook-graphql',
+        isGenerateGql,
+        query,
+        useQuery,
+        useMutate,
+        refetch,
+        customGql,
+      } = useConfig
 
-      generateGql()
+      if (isGenerateGql) generateGql()
       generateCustomGql(customGql)
-      generateApi(gqlConstantModule, query)
-      generateHooks(gqlConstantModule, [...useQuery, ...useMutate])
-      generateRefetcher(gqlConstantModule, refetch)
+      generateApi(httpModule, gqlConstantModule, query)
+      generateHooks(httpModule, gqlConstantModule, [...useQuery, ...useMutate])
+      generateRefetcher(httpModule, gqlConstantModule, refetch)
     } catch (error) {
-      this.log('config path invalid')
+      console.log('error:', error)
     }
   }
 }

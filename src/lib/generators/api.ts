@@ -14,7 +14,7 @@ import saveSourceFile from '../utils/saveSourceFile'
 
 type Operation = 'Query' | 'Mutation'
 
-export function generateApi(gqlConstantModule: string, apiConfig: string[]) {
+export function generateApi(httpModule: string, gqlConstantModule: string, apiConfig: string[]) {
   const project = new Project()
   const baseDirPath = process.cwd()
   const outPath = join(baseDirPath, 'src', 'generated', `api.ts`)
@@ -102,7 +102,7 @@ export function generateApi(gqlConstantModule: string, apiConfig: string[]) {
 
   // import stook-graphql
   sourceFile.addImportDeclaration({
-    moduleSpecifier: '@common/taro-stook-graphql',
+    moduleSpecifier: httpModule,
     namedImports: ['Options', 'query'],
   })
 

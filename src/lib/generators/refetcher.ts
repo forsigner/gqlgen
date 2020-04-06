@@ -20,7 +20,11 @@ type Operation = 'Query' | 'Mutation'
  * @param {string} gqlConstantModule
  * @param {string[]} refetchConfig
  */
-export function generateRefetcher(gqlConstantModule: string, refetchConfig: string[]) {
+export function generateRefetcher(
+  httpModule: string,
+  gqlConstantModule: string,
+  refetchConfig: string[],
+) {
   const project = new Project()
   const baseDirPath = process.cwd()
   const outPath = join(baseDirPath, 'src', 'generated', `refetcher.ts`)
@@ -131,7 +135,7 @@ export function generateRefetcher(gqlConstantModule: string, refetchConfig: stri
 
   // import stook-graphql
   sourceFile.addImportDeclaration({
-    moduleSpecifier: '@common/taro-stook-graphql',
+    moduleSpecifier: httpModule,
     namedImports: ['RefetchOptions', 'fetcher'],
   })
 

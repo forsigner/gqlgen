@@ -14,7 +14,11 @@ import saveSourceFile from '../utils/saveSourceFile'
 
 type Operation = 'Query' | 'Mutation'
 
-export function generateHooks(gqlConstantModule: string, hooksConfig: string[]) {
+export function generateHooks(
+  httpModule: string,
+  gqlConstantModule: string,
+  hooksConfig: string[],
+) {
   const project = new Project()
   const baseDirPath = process.cwd()
   const outPath = join(baseDirPath, 'src', 'generated', `hooks.ts`)
@@ -105,7 +109,7 @@ export function generateHooks(gqlConstantModule: string, hooksConfig: string[]) 
 
   // import stook-graphql
   sourceFile.addImportDeclaration({
-    moduleSpecifier: '@common/taro-stook-graphql',
+    moduleSpecifier: httpModule,
     namedImports: ['Options', 'useQuery', 'useMutate'],
   })
 
