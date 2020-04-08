@@ -32,6 +32,10 @@ export function generateDrawerService() {
           name: 'close',
           initializer: 'drawerStore.close',
         },
+        {
+          name: 'get',
+          initializer: 'drawerStore.get',
+        },
       ],
     },
   ])
@@ -52,6 +56,11 @@ export function generateDrawerService() {
     methods.push({
       name: 'close' + drawerName,
       statements: `close('${drawerName}')`,
+    })
+
+    methods.push({
+      name: 'get' + drawerName,
+      statements: `return get('${drawerName}')`,
     })
   }
 
