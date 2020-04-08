@@ -9,12 +9,15 @@ import {
   CustomGqlConfig,
   generateModalContainer,
   generateModalService,
+  generateDrawerContainer,
+  generateDrawerService,
 } from './lib'
 
 interface UserConfig {
   httpModule: string
   isGenerateGql: boolean
   isGenerateModal: boolean
+  isGenerateDrawer: boolean
   gqlConstantModule: string
   query: string[]
   useQuery: string[]
@@ -46,6 +49,7 @@ class Gqlgen extends Command {
         httpModule = 'stook-graphql',
         isGenerateGql = true,
         isGenerateModal = false,
+        isGenerateDrawer = false,
         query,
         useQuery,
         useMutate,
@@ -62,6 +66,11 @@ class Gqlgen extends Command {
       if (isGenerateModal) {
         generateModalContainer()
         generateModalService()
+      }
+
+      if (isGenerateDrawer) {
+        generateDrawerContainer()
+        generateDrawerService()
       }
     } catch (error) {
       console.log('error:', error)

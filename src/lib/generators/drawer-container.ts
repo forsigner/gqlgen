@@ -4,12 +4,12 @@ import { last } from 'lodash'
 import { find } from 'fs-jetpack'
 import saveSourceFile from '../utils/saveSourceFile'
 
-export function generateModalContainer() {
+export function generateDrawerContainer() {
   const project = new Project()
   const baseDirPath = process.cwd()
-  const outPath = join(baseDirPath, 'src', 'generated', `ModalContainer.tsx`)
+  const outPath = join(baseDirPath, 'src', 'generated', `DrawerContainer.tsx`)
   const sourceFile = project.createSourceFile(outPath, undefined, { overwrite: true })
-  const dir = join(baseDirPath, 'src', 'modals')
+  const dir = join(baseDirPath, 'src', 'drawers')
   const dirs = find(dir, { matching: '*.tsx' })
 
   sourceFile.addImportDeclarations([
@@ -18,28 +18,24 @@ export function generateModalContainer() {
       defaultImport: 'React',
     },
     {
-      moduleSpecifier: 'react-native',
-      namedImports: ['View'],
-    },
-    {
-      moduleSpecifier: '@common/modal',
-      namedImports: ['Modals', 'ModalConfig'],
+      moduleSpecifier: '@peajs/drawer',
+      namedImports: ['Drawers', 'DrawerConfig'],
     },
   ])
 
   let configString = ''
   for (const item of dirs) {
-    const modalName = last(item.split(sep))?.replace('.tsx', '')
+    const drawerName = last(item.split(sep))?.replace('.tsx', '')
 
     configString += `{
-      name: '${modalName}',
-      component: ${modalName},
+      name: '${drawerName}',
+      component: ${drawerName},
     },`
 
-    // import Modal Component
+    // import Drawer Component
     sourceFile.addImportDeclaration({
-      moduleSpecifier: `@modals/${modalName}`,
-      defaultImport: modalName,
+      moduleSpecifier: `@drawers/${drawerName}`,
+      defaultImport: drawerName,
     })
   }
 
@@ -50,7 +46,7 @@ export function generateModalContainer() {
     declarations: [
       {
         name: 'config',
-        type: 'ModalConfig',
+        type: 'DrawerConfig',
         initializer: configInitializer,
       },
     ],
@@ -59,12 +55,10 @@ export function generateModalContainer() {
 
   // 组件
   sourceFile.addFunction({
-    name: 'ModalContainer',
+    name: 'DrawerContainer',
     statements: `
       return (
-        <View>
-          <Modals config={config}></Modals>
-        </View>
+          <Drawers config={config}></Drawers>
       )
     `,
     isExported: true,
