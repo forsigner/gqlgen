@@ -24,9 +24,7 @@ export async function generateGql() {
 
   for (const name of dirNames) {
     const dir = join(baseDirPath, 'src', 'generated', 'gql', name)
-    find(dir, {
-      matching: '*.gql',
-    }).forEach(item => {
+    find(dir, { matching: '*.gql' }).forEach((item) => {
       sourceFile.addVariableStatement({
         declarationKind: VariableDeclarationKind.Const,
         declarations: [

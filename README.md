@@ -19,7 +19,7 @@ $ npm install -g gqlgen
 $ gqlgen COMMAND
 running command...
 $ gqlgen (-v|--version|version)
-gqlgen/0.0.4 darwin-x64 node-v12.8.1
+gqlgen/0.0.5 darwin-x64 node-v12.8.1
 $ gqlgen --help [COMMAND]
 USAGE
   $ gqlgen COMMAND

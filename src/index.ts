@@ -7,11 +7,14 @@ import {
   generateHooks,
   generateRefetcher,
   CustomGqlConfig,
+  generateModalContainer,
+  generateModalService,
 } from './lib'
 
 interface UserConfig {
   httpModule: string
   isGenerateGql: boolean
+  isGenerateModal: boolean
   gqlConstantModule: string
   query: string[]
   useQuery: string[]
@@ -41,7 +44,8 @@ class Gqlgen extends Command {
       const {
         gqlConstantModule,
         httpModule = 'stook-graphql',
-        isGenerateGql,
+        isGenerateGql = true,
+        isGenerateModal = false,
         query,
         useQuery,
         useMutate,
@@ -54,6 +58,11 @@ class Gqlgen extends Command {
       generateApi(httpModule, gqlConstantModule, query)
       generateHooks(httpModule, gqlConstantModule, [...useQuery, ...useMutate])
       generateRefetcher(httpModule, gqlConstantModule, refetch)
+
+      if (isGenerateModal) {
+        generateModalContainer()
+        generateModalService()
+      }
     } catch (error) {
       console.log('error:', error)
     }
