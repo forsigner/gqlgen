@@ -31,7 +31,7 @@ export function generateApi(httpModule: string, gqlConstantModule: string, apiCo
     const objectType = def as ObjectTypeDefinitionNode
 
     // 只处理跟节点 Mutation
-    if (operation !== 'Mutation') continue
+    // if (operation !== 'Mutation') continue
     if (!objectType.fields || !objectType.fields.length) continue
 
     for (const field of objectType.fields) {
