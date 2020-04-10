@@ -31,8 +31,8 @@ export function generateApi(httpModule: string, gqlConstantModule: string, apiCo
     const operation: Operation = get(def, 'name.value')
     const objectType = def as ObjectTypeDefinitionNode
 
-    // 只处理跟节点 Mutation
-    // if (operation !== 'Mutation') continue
+    // 只处理跟节点 Query、Mutation
+    if (!['Query', 'Mutation'].includes(operation)) continue
     if (!objectType.fields || !objectType.fields.length) continue
 
     for (const field of objectType.fields) {
