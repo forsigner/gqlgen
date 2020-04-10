@@ -11,6 +11,7 @@ import { join } from 'path'
 import { readFileSync } from 'fs'
 import { parse, ObjectTypeDefinitionNode } from 'graphql'
 import saveSourceFile from '../utils/saveSourceFile'
+import { formatNamedImports } from '../utils/formatNamedImports'
 
 type Operation = 'Query' | 'Mutation'
 
@@ -115,12 +116,12 @@ export function generateHooks(
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: '@generated/types',
-    namedImports: [...Array.from(new Set([...objectTypes, ...argTypes]))],
+    namedImports: [...formatNamedImports(objectTypes, argTypes)],
   })
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: gqlConstantModule,
-    namedImports: [...Array.from(new Set(gqlNames))],
+    namedImports: [...formatNamedImports(gqlNames)],
   })
 
   sourceFile.addClass({
