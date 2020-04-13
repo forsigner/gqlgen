@@ -7,6 +7,7 @@ import { generateModalContainer } from './generators/modal-container'
 import { generateModalService } from './generators/modal-service'
 import { generateDrawerContainer } from './generators/drawer-container'
 import { generateDrawerService } from './generators/drawer-service'
+import { generateStore } from './generators/store'
 export * from './types'
 
 export {
@@ -19,4 +20,5 @@ export {
   generateModalService,
   generateDrawerContainer,
   generateDrawerService,
+  generateStore,
 }

@@ -11,6 +11,7 @@ import {
   generateModalService,
   generateDrawerContainer,
   generateDrawerService,
+  generateStore,
 } from './lib'
 
 interface UserConfig {
@@ -62,6 +63,7 @@ class Gqlgen extends Command {
       generateApi(httpModule, gqlConstantModule, query)
       generateHooks(httpModule, gqlConstantModule, [...useQuery, ...useMutate])
       generateRefetcher(httpModule, gqlConstantModule, refetch)
+      generateStore()
 
       if (isGenerateModal) {
         generateModalContainer()
