@@ -73,8 +73,8 @@ export function generateDrawerService() {
 
   sourceFile.addClass({
     name: 'DrawerService',
-    methods,
     properties,
+    methods,
   })
 
   sourceFile.addVariableStatement({

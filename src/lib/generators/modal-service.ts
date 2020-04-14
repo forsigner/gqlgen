@@ -2,6 +2,7 @@ import {
   Project,
   VariableDeclarationKind,
   MethodDeclarationStructure,
+  PropertyDeclarationStructure,
   OptionalKind,
 } from 'ts-morph'
 import { last } from 'lodash'
@@ -14,6 +15,7 @@ export function generateModalService() {
   const baseDirPath = process.cwd()
   const outPath = join(baseDirPath, 'src', 'generated', 'modalService.tsx')
   const sourceFile = project.createSourceFile(outPath, undefined, { overwrite: true })
+  const properties: OptionalKind<PropertyDeclarationStructure>[] = []
 
   sourceFile.addImportDeclaration({
     moduleSpecifier: '@common/modal',
@@ -43,6 +45,11 @@ export function generateModalService() {
   for (const item of dirs) {
     const modalName = last(item.split(sep))?.replace('.tsx', '') as string
 
+    properties.push({
+      name: modalName,
+      initializer: `'${modalName}'`,
+    })
+
     methods.push({
       name: 'open' + modalName,
       parameters: [{ name: 'data?', type: 'any' }],
@@ -57,6 +64,7 @@ export function generateModalService() {
 
   sourceFile.addClass({
     name: 'ModalService',
+    properties,
     methods,
   })
 
