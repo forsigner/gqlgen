@@ -2,6 +2,7 @@ import {
   Project,
   VariableDeclarationKind,
   MethodDeclarationStructure,
+  PropertyDeclarationStructure,
   OptionalKind,
 } from 'ts-morph'
 import { last } from 'lodash'
@@ -43,9 +44,15 @@ export function generateDrawerService() {
   const dir = join(baseDirPath, 'src', 'drawers')
   const dirs = find(dir, { matching: '*.tsx' })
   const methods: OptionalKind<MethodDeclarationStructure>[] = []
+  const properties: OptionalKind<PropertyDeclarationStructure>[] = []
 
   for (const item of dirs) {
     const drawerName = last(item.split(sep))?.replace('.tsx', '') as string
+
+    properties.push({
+      name: drawerName,
+      initializer: `'${drawerName}'`,
+    })
 
     methods.push({
       name: 'open' + drawerName,
@@ -67,6 +74,7 @@ export function generateDrawerService() {
   sourceFile.addClass({
     name: 'DrawerService',
     methods,
+    properties,
   })
 
   sourceFile.addVariableStatement({
