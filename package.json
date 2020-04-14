@@ -33,6 +33,7 @@
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-oclif-typescript": "^0.1.0",
+    "standard-version": "^7.1.0",
     "ts-node": "^8.8.1",
     "typescript": "^3.8.3"
   },
@@ -55,9 +56,10 @@
   "repository": "forsigner/gqlgen",
   "scripts": {
     "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc -b",
     "test": "echo NO TESTS",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "release": "standard-version"
   },
   "types": "lib/index.d.ts"
 }
