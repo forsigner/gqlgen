@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/forsigner/gqlgen/compare/v0.1.5...v0.1.6) (2020-04-23)
+
+
+### Features
+
+* refetcher support config key ([9c9b393](https://github.com/forsigner/gqlgen/commit/9c9b3937ce3504a317884c269123a4ebba6808d8))
+
 ### [0.1.5](https://github.com/forsigner/gqlgen/compare/v0.1.4...v0.1.5) (2020-04-14)
 
 
