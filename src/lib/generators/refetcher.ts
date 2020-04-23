@@ -81,34 +81,37 @@ export function generateRefetcher(
       if (!args.length) {
         argsType = 'any'
         statements = `
-          if (!fetcher.get(${gqlName}))  {
-            return console.warn('fetcher找不到${gqlName}') as any
+          const key = opt.key ? opt.key : ${gqlName}
+          if (!fetcher.get(key))  {
+            return console.warn('fetcher找不到' + key) as any
           }
           if (Object.keys(args).length) opt.variables = args
           if (!opt.showLoading) opt.showLoading = false
-          return await fetcher.get(${gqlName}).refetch(opt)
+          return await fetcher.get(key).refetch(opt)
         `
         // 只有个参数并且叫 input
       } else if (args.length === 1 && firstArgName === 'input') {
         argsType = get(args[0], 'type.type.name.value')
         statements = `
-          if (!fetcher.get(${gqlName}))  {
-            return console.warn('fetcher找不到${gqlName}') as any
+          const key = opt.key ? opt.key : ${gqlName}
+          if (!fetcher.get(key))  {
+            return console.warn('fetcher找不到' + key) as any
           }
           if (Object.keys(args).length) opt.variables = {input: args}
           if (!opt.showLoading) opt.showLoading = false
-          return await fetcher.get(${gqlName}).refetch(opt)
+          return await fetcher.get(key).refetch(opt)
         `
         // 多参数,或者不叫 input
       } else {
         argsType = `${capital(operation)}${pascal(gqlName)}Args`
         statements = `
-          if (!fetcher.get(${gqlName}))  {
-            return console.warn('fetcher找不到${gqlName}') as any
+          const key = opt.key ? opt.key : ${gqlName}
+          if (!fetcher.get(key))  {
+            return console.warn('fetcher找不到' + key) as any
           }
           if (Object.keys(args).length) opt.variables = args
           if (!opt.showLoading) opt.showLoading = false
-          return await fetcher.get(${gqlName}).refetch(opt)
+          return await fetcher.get(key).refetch(opt)
         `
       }
 
