@@ -80,7 +80,10 @@ export function generateHooks(
         argsType = get(args[0], 'type.type.name.value')
 
         // TODO: 处理函数
-        statements = `return ${action}<${T}>(${gqlName}, { ...opt, variables: { input: args||{} } })`
+        statements = `
+          const params = typeof args === 'function' ? args() : args
+          return ${action}<${T}>(${gqlName}, { ...opt, variables: { input: params } })
+        `
         // 多参数,或者不叫 input
       } else {
         argsType = `${capital(operation)}${pascal(gqlName)}Args`
