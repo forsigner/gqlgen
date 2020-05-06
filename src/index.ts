@@ -12,6 +12,7 @@ import {
   generateDrawerContainer,
   generateDrawerService,
   generateStore,
+  CommonConfig,
 } from './lib'
 
 interface UserConfig {
@@ -24,7 +25,9 @@ interface UserConfig {
   useQuery: string[]
   useMutate: string[]
   refetch: string[]
+  defaultDepthLimit: number
   customGql: CustomGqlConfig
+  commonGql: CommonConfig
 }
 
 class Gqlgen extends Command {
@@ -56,9 +59,11 @@ class Gqlgen extends Command {
         useMutate,
         refetch,
         customGql,
+        commonGql = [],
+        defaultDepthLimit = 2,
       } = useConfig
 
-      if (isGenerateGql) generateGql()
+      if (isGenerateGql) generateGql(commonGql, defaultDepthLimit)
       generateCustomGql(customGql)
       generateApi(httpModule, gqlConstantModule, query)
       generateHooks(httpModule, gqlConstantModule, [...useQuery, ...useMutate])

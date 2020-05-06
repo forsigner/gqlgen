@@ -5,6 +5,7 @@ export interface ServiceOptions {
 }
 
 export type CustomGqlConfig = ConfigItem[]
+export type CommonConfig = ConfigItem[]
 export interface ConfigItem {
   name: string
   depthLimit?: number
