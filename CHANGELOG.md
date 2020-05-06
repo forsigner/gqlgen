@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/forsigner/gqlgen/compare/v0.1.7...v0.1.8) (2020-05-06)
+
+
+### Features
+
+* custom-gql support excludes ([5dea7af](https://github.com/forsigner/gqlgen/commit/5dea7af36e7ff48491c7c9ca1121d0459b29b5da))
+* 支持commonGql config ([d33ed24](https://github.com/forsigner/gqlgen/commit/d33ed2457805b91e23ed9be9b05b73ac146e50f8))
+
 ### [0.1.7](https://github.com/forsigner/gqlgen/compare/v0.1.6...v0.1.7) (2020-04-24)
 
 
