@@ -60,19 +60,24 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
   const objectType: GraphQLObjectType = (gqlSchema as any)[`get${type}Type`]()
   if (!objectType) return []
   const fields = objectType.getFields()
+
   const fieldKeys = Object.keys(fields)
-  const keys = fieldKeys.filter(key => config.find(i => i.name === key))
-  keys.forEach(fieldKey => {
-    const find = config.find(i => i.name === fieldKey) as ConfigItem
+  const keys = fieldKeys.filter((key) => config.find((i) => i.name === key))
+  keys.forEach((fieldKey) => {
+    const find = config.find((i) => i.name === fieldKey) as ConfigItem
+
     const nameType = gqlSchema.getType(type)
     if (nameType && 'getFields' in nameType) {
       const field = nameType.getFields()[fieldKey]
+
       if (field && 'isDeprecated' in field && !field.isDeprecated) {
         const queryResult = generateQuery({
           curName: fieldKey,
           curParentType: type,
           depthLimit: find.depthLimit || 2,
+          excludes: find.excludes || [],
         })
+
         const varsToTypesStr = getVarsToTypesStr(queryResult.argumentsDict)
         let query = queryResult.queryStr
         query = `${type.toLowerCase()} ${fieldKey}${
@@ -95,6 +100,7 @@ function generateQuery(params: GenerateQueryParams): any {
     crossReferenceKeyList = [],
     curDepth = 1,
     depthLimit = 2,
+    excludes = [],
   } = params
 
   const queryType: any = gqlSchema.getType(curParentType)
@@ -110,15 +116,17 @@ function generateQuery(params: GenerateQueryParams): any {
     if (crossReferenceKeyList.indexOf(crossReferenceKey) !== -1 || curDepth > depthLimit) return ''
     crossReferenceKeyList.push(crossReferenceKey)
     const childKeys = Object.keys(curType.getFields())
+
     childQuery = childKeys
-      .filter(fieldName => {
+      .filter((fieldName) => {
         /* Exclude deprecated fields */
         const queryType: any = gqlSchema.getType(curType)
         const fieldSchema = queryType.getFields()[fieldName]
+        if (excludes.includes(fieldName)) return false
         return !fieldSchema.isDeprecated
       })
       .map(
-        cur =>
+        (cur) =>
           generateQuery({
             curName: cur,
             curParentType: curType,
@@ -128,9 +136,10 @@ function generateQuery(params: GenerateQueryParams): any {
             crossReferenceKeyList: crossReferenceKeyList,
             curDepth: curDepth + 1,
             depthLimit,
+            excludes,
           }).queryStr,
       )
-      .filter(cur => cur)
+      .filter((cur) => cur)
       .join('\n')
   }
   if (!(curType.getFields && !childQuery)) {
@@ -158,7 +167,7 @@ function generateQuery(params: GenerateQueryParams): any {
         const valueType: any = gqlSchema.getType(valueTypeName)
         const unionChildQuery = Object.keys(valueType.getFields())
           .map(
-            cur =>
+            (cur) =>
               generateQuery({
                 curName: cur,
                 curParentType: valueType,
@@ -168,9 +177,10 @@ function generateQuery(params: GenerateQueryParams): any {
                 crossReferenceKeyList: crossReferenceKeyList,
                 curDepth: curDepth + 2,
                 depthLimit: 2,
+                excludes,
               }).queryStr,
           )
-          .filter(cur => cur)
+          .filter((cur) => cur)
           .join('\n')
         queryStr += `${fragIndent}... on ${valueTypeName} {\n${unionChildQuery}\n${fragIndent}}\n`
       }
