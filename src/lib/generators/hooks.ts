@@ -81,8 +81,10 @@ export function generateHooks(
 
         // TODO: 处理函数
         statements = `
-          const params = typeof args === 'function' ? args() : args
-          return ${action}<${T}>(${gqlName}, { ...opt, variables: { input: params } })
+          return ${action}<${T}>(${gqlName}, { ...opt, variables: () => {
+            const params = typeof args === 'function' ? args() : args
+            return { input: params }
+          }})
         `
         // 多参数,或者不叫 input
       } else {
