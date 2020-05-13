@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/forsigner/gqlgen/compare/v0.1.10...v0.1.11) (2020-05-13)
+
+
+### Features
+
+* 支持精准exclude ([67e414a](https://github.com/forsigner/gqlgen/commit/67e414a6d4e60c307f5baf44060dc43a9f5c0566))
+
 ### [0.1.10](https://github.com/forsigner/gqlgen/compare/v0.1.9...v0.1.10) (2020-05-13)
 
 
