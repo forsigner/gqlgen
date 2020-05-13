@@ -119,6 +119,12 @@ function generateQuery(params: GenerateQueryParams): any {
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
+  if (trace === 'scriptContributors.contributor.scriptContributors.script') {
+    console.log('params', params)
+
+    console.log('field', field)
+    console.log('curDepth', curDepth)
+  }
 
   const curTypeName = field.type.inspect().replace(/[[\]!]/g, '')
   const curType: any = gqlSchema.getType(curTypeName)
@@ -129,6 +135,11 @@ function generateQuery(params: GenerateQueryParams): any {
   if (curType.getFields) {
     const crossReferenceKey = `${curParentName}To${curName}Key`
 
+    if (trace === 'scriptContributors.contributor.scriptContributors.script') {
+      console.log('crossReferenceKey', crossReferenceKey)
+
+      console.log('crossReferenceKeyList', crossReferenceKeyList)
+    }
     // if (crossReferenceKeyList.indexOf(crossReferenceKey) !== -1 || curDepth > depthLimit) return ''
     if (curDepth > depthLimit) return ''
 

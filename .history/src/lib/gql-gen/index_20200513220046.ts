@@ -109,7 +109,7 @@ function generateQuery(params: GenerateQueryParams): any {
   } = params
   let trace = params.trace
 
-  if (excludes.includes(trace)) return { queryStr: '', argumentsDict: [] }
+  // if (excludes.includes(trace)) return { queryStr: '', argumentsDict: [] }
 
   if (!trace) {
     trace += `${curName}`
@@ -119,7 +119,6 @@ function generateQuery(params: GenerateQueryParams): any {
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
-
   const curTypeName = field.type.inspect().replace(/[[\]!]/g, '')
   const curType: any = gqlSchema.getType(curTypeName)
 
@@ -128,10 +127,7 @@ function generateQuery(params: GenerateQueryParams): any {
 
   if (curType.getFields) {
     const crossReferenceKey = `${curParentName}To${curName}Key`
-
-    // if (crossReferenceKeyList.indexOf(crossReferenceKey) !== -1 || curDepth > depthLimit) return ''
-    if (curDepth > depthLimit) return ''
-
+    if (crossReferenceKeyList.indexOf(crossReferenceKey) !== -1 || curDepth > depthLimit) return ''
     crossReferenceKeyList.push(crossReferenceKey)
     const childKeys = Object.keys(curType.getFields())
 
@@ -161,6 +157,8 @@ function generateQuery(params: GenerateQueryParams): any {
       .filter((cur) => cur)
       .join('\n')
   }
+
+  console.log('childQuery', childQuery)
 
   if (!(curType.getFields && !childQuery)) {
     queryStr = `${'    '.repeat(curDepth)}${field.name}`

@@ -119,6 +119,12 @@ function generateQuery(params: GenerateQueryParams): any {
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
+  if (trace === 'scriptContributors.contributor.scriptContributors.script') {
+    console.log('params', params)
+
+    console.log('field', field)
+    console.log('curDepth', curDepth)
+  }
 
   const curTypeName = field.type.inspect().replace(/[[\]!]/g, '')
   const curType: any = gqlSchema.getType(curTypeName)

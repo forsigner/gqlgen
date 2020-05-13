@@ -68,6 +68,8 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
   // 那配置中有效的端点
   const validConfig = config.filter((i) => fieldKeys.includes(i.name))
 
+  console.log('validConfig', validConfig)
+
   validConfig.forEach((item) => {
     const nameType = gqlSchema.getType(type)
 
@@ -119,7 +121,6 @@ function generateQuery(params: GenerateQueryParams): any {
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
-
   const curTypeName = field.type.inspect().replace(/[[\]!]/g, '')
   const curType: any = gqlSchema.getType(curTypeName)
 
@@ -128,10 +129,7 @@ function generateQuery(params: GenerateQueryParams): any {
 
   if (curType.getFields) {
     const crossReferenceKey = `${curParentName}To${curName}Key`
-
-    // if (crossReferenceKeyList.indexOf(crossReferenceKey) !== -1 || curDepth > depthLimit) return ''
-    if (curDepth > depthLimit) return ''
-
+    if (crossReferenceKeyList.indexOf(crossReferenceKey) !== -1 || curDepth > depthLimit) return ''
     crossReferenceKeyList.push(crossReferenceKey)
     const childKeys = Object.keys(curType.getFields())
 
