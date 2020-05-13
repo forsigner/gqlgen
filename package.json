@@ -1,7 +1,7 @@
 {
   "name": "gqlgen",
   "description": "gqlgen",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "forsigner",
   "bin": {
     "gqlgen": "./bin/run"

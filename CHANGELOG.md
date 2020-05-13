@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://github.com/forsigner/gqlgen/compare/v0.1.11...v0.1.12) (2020-05-13)
+
+
+### Bug Fixes
+
+* bug ([0d96c51](https://github.com/forsigner/gqlgen/commit/0d96c511fa1d1c50b2ba29b099126ae37c4ee5dd))
+
 ### [0.1.11](https://github.com/forsigner/gqlgen/compare/v0.1.10...v0.1.11) (2020-05-13)
 
 
