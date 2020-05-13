@@ -37,6 +37,7 @@ function genGQL(outPath: string, data: any) {
 export function generateCustomGql(config: CustomGqlConfig) {
   if (!config || !config.length) return
   const data = generate(config)
+
   const outPath = join(process.cwd(), 'src', 'generated', 'custom-gql.ts')
   genGQL(outPath, data)
 }

@@ -28,4 +28,5 @@ export interface GenerateQueryParams {
   curDepth?: number
   depthLimit?: number
   excludes?: string[] // 忽略的字段
+  trace: string //字段路径
 }

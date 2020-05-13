@@ -58,6 +58,7 @@ export function generate(config: CustomGqlConfig): GraphQLData {
 export function generateByType(type: string, config: CustomGqlConfig): GraphQLData {
   const data: GraphQLData = []
   const objectType: GraphQLObjectType = (gqlSchema as any)[`get${type}Type`]()
+
   if (!objectType) return []
   const fields = objectType.getFields()
 
@@ -69,6 +70,7 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
 
   validConfig.forEach((item) => {
     const nameType = gqlSchema.getType(type)
+
     if (nameType && 'getFields' in nameType) {
       const field = nameType.getFields()[item.name]
 
@@ -78,6 +80,7 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
           curParentType: type,
           depthLimit: item.depthLimit || 2,
           excludes: item.excludes || [],
+          trace: '',
         })
 
         const varsToTypesStr = getVarsToTypesStr(queryResult.argumentsDict)
@@ -104,6 +107,15 @@ function generateQuery(params: GenerateQueryParams): any {
     depthLimit = 2,
     excludes = [],
   } = params
+  let trace = params.trace
+
+  if (excludes.includes(trace)) return { queryStr: '', argumentsDict: [] }
+
+  if (!trace) {
+    trace += `${curName}`
+  } else {
+    trace += `.${curName}`
+  }
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
@@ -139,6 +151,7 @@ function generateQuery(params: GenerateQueryParams): any {
             curDepth: curDepth + 1,
             depthLimit,
             excludes,
+            trace,
           }).queryStr,
       )
       .filter((cur) => cur)
@@ -180,6 +193,7 @@ function generateQuery(params: GenerateQueryParams): any {
                 curDepth: curDepth + 2,
                 depthLimit: 2,
                 excludes,
+                trace,
               }).queryStr,
           )
           .filter((cur) => cur)
