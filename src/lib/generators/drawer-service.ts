@@ -66,7 +66,9 @@ export function generateDrawerService() {
     })
 
     methods.push({
-      name: 'get' + drawerName,
+      name: 'get' + drawerName + '<T>',
+      
+      returnType: 'T',
       statements: `return get('${drawerName}')`,
     })
   }

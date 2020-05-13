@@ -15,7 +15,6 @@ const source = new Source(typeDef)
 const gqlSchema = buildSchema(source)
 
 export async function generateGql(commonGql: CommonConfig, defaultDepthLimit: number) {
-  const baseDirPath = process.cwd()
   const outPath = join(process.cwd(), 'src', 'generated', 'gql.ts')
   const project = new Project()
 

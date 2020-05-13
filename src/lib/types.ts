@@ -7,9 +7,10 @@ export interface ServiceOptions {
 export type CustomGqlConfig = ConfigItem[]
 export type CommonConfig = ConfigItem[]
 export interface ConfigItem {
-  name: string
-  depthLimit?: number
-  excludes?: string[]
+  alias?: string // 生成的变量的名称，比如 SCRIPT
+  name: string // graphql 端点名称
+  depthLimit?: number // 深度
+  excludes?: string[] // 忽略的字段
 }
 
 export type GraphQLData = Array<{

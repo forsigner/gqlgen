@@ -61,29 +61,31 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
   if (!objectType) return []
   const fields = objectType.getFields()
 
+  // 所有端点的名称
   const fieldKeys = Object.keys(fields)
-  const keys = fieldKeys.filter((key) => config.find((i) => i.name === key))
-  keys.forEach((fieldKey) => {
-    const find = config.find((i) => i.name === fieldKey) as ConfigItem
 
+  // 那配置中有效的端点
+  const validConfig = config.filter((i) => fieldKeys.includes(i.name))
+
+  validConfig.forEach((item) => {
     const nameType = gqlSchema.getType(type)
     if (nameType && 'getFields' in nameType) {
-      const field = nameType.getFields()[fieldKey]
+      const field = nameType.getFields()[item.name]
 
       if (field && 'isDeprecated' in field && !field.isDeprecated) {
         const queryResult = generateQuery({
-          curName: fieldKey,
+          curName: item.name,
           curParentType: type,
-          depthLimit: find.depthLimit || 2,
-          excludes: find.excludes || [],
+          depthLimit: item.depthLimit || 2,
+          excludes: item.excludes || [],
         })
 
         const varsToTypesStr = getVarsToTypesStr(queryResult.argumentsDict)
         let query = queryResult.queryStr
-        query = `${type.toLowerCase()} ${fieldKey}${
+        query = `${type.toLowerCase()} ${item.name}${
           varsToTypesStr ? `(${varsToTypesStr})` : ''
         }{\n${query}\n}`
-        data.push({ name: fieldKey, query })
+        data.push({ name: item.alias || item.name, query })
       }
     }
   })
