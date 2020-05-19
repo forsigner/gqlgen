@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.14](https://github.com/forsigner/gqlgen/compare/v0.1.12...v0.1.14) (2020-05-19)
+
+
+### Features
+
+* improve hooks ([ab2d80c](https://github.com/forsigner/gqlgen/commit/ab2d80ca4babcfe015ce21ce47970bbf2a709686))
+* 支持忽略子field ([77e1c9c](https://github.com/forsigner/gqlgen/commit/77e1c9cceac9c4cf515ef39bc689d257fa950996))
+
 ### [0.1.13](https://github.com/forsigner/gqlgen/compare/v0.1.12...v0.1.13) (2020-05-14)
 
 
