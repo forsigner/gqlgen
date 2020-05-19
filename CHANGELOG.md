@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://github.com/forsigner/gqlgen/compare/v0.1.12...v0.1.13) (2020-05-14)
+
+
+### Features
+
+* Hooks 支持 alias ([9d17b03](https://github.com/forsigner/gqlgen/commit/9d17b031afd2c748826123cc58c7c4529d63f713))
+* improve alias ([f408d79](https://github.com/forsigner/gqlgen/commit/f408d7902669c64784ca2e17fc2c63011fac1a0c))
+* refetcher 支持alias ([b323e93](https://github.com/forsigner/gqlgen/commit/b323e93a27ffaeaa6fc4985f2b46584127d22ddb))
+
 ### [0.1.12](https://github.com/forsigner/gqlgen/compare/v0.1.11...v0.1.12) (2020-05-13)
 
 

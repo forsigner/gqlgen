@@ -85,7 +85,7 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
 
         const varsToTypesStr = getVarsToTypesStr(queryResult.argumentsDict)
         let query = queryResult.queryStr
-        query = `${type.toLowerCase()} ${item.name}${
+        query = `${type.toLowerCase()} ${item.alias || item.name}${
           varsToTypesStr ? `(${varsToTypesStr})` : ''
         }{\n${query}\n}`
         data.push({ name: item.alias || item.name, query })
@@ -111,7 +111,11 @@ function generateQuery(params: GenerateQueryParams): any {
 
   if (excludes.includes(trace)) return { queryStr: '', argumentsDict: [] }
 
-  trace += trace ? `.${curName}` : `${curName}`
+  if (!trace) {
+    trace += `${curName}`
+  } else {
+    trace += `.${curName}`
+  }
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
@@ -134,8 +138,6 @@ function generateQuery(params: GenerateQueryParams): any {
     childQuery = childKeys
       .filter((fieldName) => {
         /* Exclude deprecated fields */
-        const fieldTrace = trace ? `${trace}.${fieldName}` : fieldName
-        if (excludes.includes(fieldTrace)) return false
         const queryType: any = gqlSchema.getType(curType)
         const fieldSchema = queryType.getFields()[fieldName]
         if (excludes.includes(fieldName)) return false

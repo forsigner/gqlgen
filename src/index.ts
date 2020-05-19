@@ -66,8 +66,8 @@ class Gqlgen extends Command {
       if (isGenerateGql) generateGql(commonGql, defaultDepthLimit)
       generateCustomGql(customGql)
       generateApi(httpModule, gqlConstantModule, query)
-      generateHooks(httpModule, gqlConstantModule, [...useQuery, ...useMutate])
-      generateRefetcher(httpModule, gqlConstantModule, refetch)
+      generateHooks(httpModule, gqlConstantModule, [...useQuery, ...useMutate], customGql)
+      generateRefetcher(httpModule, gqlConstantModule, refetch, customGql)
       generateStore()
 
       if (isGenerateModal) {
