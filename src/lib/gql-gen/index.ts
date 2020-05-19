@@ -111,11 +111,7 @@ function generateQuery(params: GenerateQueryParams): any {
 
   if (excludes.includes(trace)) return { queryStr: '', argumentsDict: [] }
 
-  if (!trace) {
-    trace += `${curName}`
-  } else {
-    trace += `.${curName}`
-  }
+  trace += trace ? `.${curName}` : `${curName}`
 
   const queryType: any = gqlSchema.getType(curParentType)
   const field = queryType.getFields()[curName]
@@ -138,6 +134,8 @@ function generateQuery(params: GenerateQueryParams): any {
     childQuery = childKeys
       .filter((fieldName) => {
         /* Exclude deprecated fields */
+        const fieldTrace = trace ? `${trace}.${fieldName}` : fieldName
+        if (excludes.includes(fieldTrace)) return false
         const queryType: any = gqlSchema.getType(curType)
         const fieldSchema = queryType.getFields()[fieldName]
         if (excludes.includes(fieldName)) return false
