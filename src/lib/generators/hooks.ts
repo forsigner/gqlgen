@@ -110,6 +110,12 @@ export function generateHooks(
   const aliasConfigs = customGql.filter((i) => hooksConfig.includes(i.alias || ''))
   let objectTypes: string[] = []
 
+  // 把 alias 也转换成 name
+  const realNames = hooksConfig.map((name) => {
+    const find = customGql.find((i) => i.alias === name)
+    return find ? find.name : name
+  })
+
   for (const def of sdl.definitions) {
     const operation: Operation = get(def, 'name.value')
     const objectType = def as ObjectTypeDefinitionNode
@@ -122,7 +128,7 @@ export function generateHooks(
       const queryName = field.name.value // 节点名称
 
       // 如果 hookConfig 配置大于 0，就只使用 hook 配置里面的 queryName
-      if (hooksConfig.length && !hooksConfig.includes(queryName)) {
+      if (hooksConfig.length && !realNames.includes(queryName)) {
         continue
       }
 

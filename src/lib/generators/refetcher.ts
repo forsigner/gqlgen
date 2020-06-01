@@ -134,7 +134,14 @@ export function generateRefetcher(
   const objectTypes: string[] = []
   const gqlNames: string[] = [] // graphQL query name, 例如： USERS、USERS_CONECTION
 
+  // 有效的 alias config
   const aliasConfigs = customGql.filter((i) => refetchConfig.includes(i.alias || ''))
+
+  // 把 alias 也转换成 name
+  const realNames = refetchConfig.map((name) => {
+    const find = customGql.find((i) => i.alias === name)
+    return find ? find.name : name
+  })
 
   for (const def of sdl.definitions) {
     const operation: Operation = get(def, 'name.value')
@@ -148,9 +155,11 @@ export function generateRefetcher(
       const queryName = field.name.value
 
       // 如果 refetchConfig 配置大于 0，就只使用 refetchConfig 配置里面的 queryName
-      if (refetchConfig.length && !refetchConfig.includes(queryName)) {
+      if (refetchConfig.length && !realNames.includes(queryName)) {
         continue
       }
+
+      const matchingAliasConfigs = aliasConfigs.filter((i) => i.name === queryName)
 
       const action = operation === 'Query' ? 'useQuery' : 'useMutate'
       const gqlName = upper(queryName, '_')
@@ -164,8 +173,6 @@ export function generateRefetcher(
       const statements = getStatements(field, action, gqlName)
 
       if (argsType !== 'any') argTypes.push(argsType)
-
-      const matchingAliasConfigs = aliasConfigs.filter((i) => i.name === queryName)
 
       // 生产别名的 Hooks
       for (const item of matchingAliasConfigs) {

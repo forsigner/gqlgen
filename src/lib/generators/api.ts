@@ -12,10 +12,16 @@ import { readFileSync } from 'fs'
 import { parse, ObjectTypeDefinitionNode } from 'graphql'
 import saveSourceFile from '../utils/saveSourceFile'
 import { formatNamedImports } from '../utils/formatNamedImports'
+import { CustomGqlConfig } from '../types'
 
 type Operation = 'Query' | 'Mutation'
 
-export function generateApi(httpModule: string, gqlConstantModule: string, apiConfig: string[]) {
+export function generateApi(
+  httpModule: string,
+  gqlConstantModule: string,
+  apiConfig: string[],
+  customGql: CustomGqlConfig,
+) {
   const project = new Project()
   const baseDirPath = process.cwd()
   const outPath = join(baseDirPath, 'src', 'generated', `api.ts`)
@@ -26,6 +32,12 @@ export function generateApi(httpModule: string, gqlConstantModule: string, apiCo
   const argTypes: string[] = []
   const objectTypes: string[] = []
   const gqlNames: string[] = [] // graphQL query name, 例如： USERS、USERS_CONECTION
+
+  // 把 alias 也转换成 name
+  const realNames = apiConfig.map((name) => {
+    const find = customGql.find((i) => i.alias === name)
+    return find ? find.name : name
+  })
 
   for (const def of sdl.definitions) {
     const operation: Operation = get(def, 'name.value')
@@ -44,8 +56,7 @@ export function generateApi(httpModule: string, gqlConstantModule: string, apiCo
       let objectType: string = get(field, 'type.type.name.value')
       let T: string // 返回的类型
 
-      // 如果 refetchConfig 配置大于 0，就只使用 refetchConfig 配置里面的 queryName
-      if (apiConfig.length && !apiConfig.includes(queryName)) {
+      if (apiConfig.length && !realNames.includes(queryName)) {
         continue
       }
 
