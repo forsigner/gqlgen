@@ -80,6 +80,7 @@ export function generateByType(type: string, config: CustomGqlConfig): GraphQLDa
           curParentType: type,
           depthLimit: item.depthLimit || 2,
           excludes: item.excludes || [],
+          includes: item.includes || [],
           trace: '',
         })
 
@@ -106,6 +107,7 @@ function generateQuery(params: GenerateQueryParams): any {
     curDepth = 1,
     depthLimit = 2,
     excludes = [],
+    includes = [],
   } = params
   let trace = params.trace
 
@@ -135,11 +137,16 @@ function generateQuery(params: GenerateQueryParams): any {
       .filter((fieldName) => {
         /* Exclude deprecated fields */
         const fieldTrace = trace ? `${trace}.${fieldName}` : fieldName
-        if (excludes.includes(fieldTrace)) return false
-
         const queryType: any = gqlSchema.getType(curType)
         const fieldSchema = queryType.getFields()[fieldName]
-        if (excludes.includes(fieldName)) return false
+
+        if (includes.length) {
+          if (includes.includes(fieldTrace)) return !fieldSchema.isDeprecated
+          return false
+        }
+
+        if (excludes.includes(fieldTrace) || excludes.includes(fieldName)) return false
+
         return !fieldSchema.isDeprecated
       })
       .map(
@@ -154,6 +161,7 @@ function generateQuery(params: GenerateQueryParams): any {
             curDepth: curDepth + 1,
             depthLimit,
             excludes,
+            includes,
             trace,
           }).queryStr,
       )

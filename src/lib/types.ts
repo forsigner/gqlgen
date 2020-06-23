@@ -11,6 +11,7 @@ export interface ConfigItem {
   name: string // graphql 端点名称
   depthLimit?: number // 深度
   excludes?: string[] // 忽略的字段
+  includes?: string[]
 }
 
 export type GraphQLData = Array<{
@@ -28,5 +29,6 @@ export interface GenerateQueryParams {
   curDepth?: number
   depthLimit?: number
   excludes?: string[] // 忽略的字段
+  includes?: string[]
   trace: string //字段路径
 }
